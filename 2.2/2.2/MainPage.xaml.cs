@@ -1,23 +1,41 @@
-﻿namespace _2._2;
+﻿using System.Windows.Input;
+
+namespace _2._2;
 
 public partial class MainPage : ContentPage
 {
-    int count = 0;
+    public ICommand TapCommand => new Command<string>(async (url) => await Launcher.OpenAsync(url));
 
-    public MainPage()
+	public MainPage()
     {
         InitializeComponent();
     }
 
-    private void OnCounterClicked(object sender, EventArgs e)
+	private async void visitURI(object sender, EventArgs e)
+	{
+		Uri url;
+		switch ((sender as Button).Text)
+		{
+			case "Vue.js":
+				url = new Uri("https://vuejs.org/tutorial/#step-1");
+				break;
+			case "Typescript":
+				url = new Uri("https://www.w3schools.com/typescript/");
+				break;
+			case "SCSS":
+				url = new Uri("https://www.w3schools.com/sass/");
+				break;
+			default:
+				url = new Uri("https://www.w3schools.com/sass/");
+				break;
+		}
+
+		await Browser.OpenAsync(url);
+	}
+	
+    private async void TapGestureRecognizer_OnTapped(object sender, TappedEventArgs e)
     {
-        count++;
-
-        if (count == 1)
-            CounterBtn.Text = $"Clicked {count} time";
-        else
-            CounterBtn.Text = $"Clicked {count} times";
-
-        SemanticScreenReader.Announce(CounterBtn.Text);
+	    Uri itvisURI = new Uri("https://it-visibility.net");
+	    await Browser.OpenAsync(itvisURI);
     }
 }
